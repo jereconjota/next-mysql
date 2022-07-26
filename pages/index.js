@@ -1,12 +1,10 @@
 import axios from 'axios'
-import { ProductForm } from '../components/ProductForm'
+import { Layout } from '../components/Layout'
 
 function index({ products }) {
     console.log(products)
     return (
-        <div>
-            <ProductForm />
-
+        <Layout>
             {products.map(product => (
                 <div key={product.id}>
                     <h3>{product.name}</h3>
@@ -14,7 +12,7 @@ function index({ products }) {
                     <p>{product.price}</p>
                 </div>
             ))}
-        </div>
+        </Layout>
     )
 }
 
