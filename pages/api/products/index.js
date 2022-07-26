@@ -1,36 +1,25 @@
+import { pool } from '../../../config/db';
+
 export default function handler(req, res) {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({
-        products: [
-        {
-            id: 1,
-            name: 'Product 1',
-            price: 10,
-            description: 'This is a product',
-            image: 'https://picsum.photos/id/1/200/300'
+
+    const METHOD = {
+        GET: async () => {
+            const [ products ] = await pool.query('SELECT * FROM products');
+            console.log(products);
+            res.status(200).json(products);
         },
-        {
-            id: 2,
-            name: 'Product 2',
-            price: 20,
-            description: 'This is a product',
-            image: 'https://picsum.photos/id/2/200/300'
-        },
-        {
-            id: 3,
-            name: 'Product 3',
-            price: 30,
-            description: 'This is a product',
-            image: 'https://picsum.photos/id/3/200/300'
-        },
-        {
-            id: 4,
-            name: 'Product 4',
-            price: 40,
-            description: 'This is a product',
-            image: 'https://picsum.photos/id/4/200/300'
-        }
-        ]
-    }));
+        POST: async () => {
+            console.log(req.body)
+            const { name, price, description } = req.body;
+            
+            const [ result ] = await pool.query(`INSERT INTO products SET ?`, { name, price, description });
+            
+            console.log(result);
+
+            res.status(200).json({ name, price, description, id: result.insertId });
+        }, 
+
+    }
+
+    return METHOD[req.method]();
 }

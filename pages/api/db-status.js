@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     try {
         const result = await pool.query('SELECT NOW() AS now;');
         const now = result[0][0].now;
-        res.status(200).json({ sttus: 'Ok', now });
+        res.status(200).json({ status: 'Ok', now });
 
     } catch (error) {
         console.log(error);
