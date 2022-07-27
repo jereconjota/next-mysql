@@ -57,16 +57,17 @@ export function ProductForm() {
     return (
         <div className="w-full max-w-xs">
             <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 py-8 mb-4">
-                <label htmlFor="name">Name: </label>
-                <input type="text" name="name" onChange={handleChange} className="shadow border rounded py-2 px-3 text-gray-700" value={product.name} />
+                <label htmlFor="name"  className="block text-gray-700 text-sm font-bold my-2">Name: </label>
+                <input type="text" name="name" onChange={handleChange} className="shadow border rounded py-2 px-3 text-gray-700
+                focus:outline-none focus:shadow-outline w-full" value={product.name} />
 
-                <label htmlFor="price">Price: </label>
-                <input type="text" name="price" id="price" onChange={handleChange} className="shadow border rounded py-2 px-3 text-gray-700" value={product.price} />
+                <label htmlFor="price"  className="block text-gray-700 text-sm font-bold my-2">Price: </label>
+                <input type="text" name="price" id="price" onChange={handleChange} className="shadow border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline w-full" value={product.price} />
 
-                <label htmlFor="description">Description: </label>
-                <textarea name="description" rows="2" onChange={handleChange} className="shadow border rounded py-2 px-3 text-gray-700" value={product.description}></textarea>
+                <label htmlFor="description"  className="block text-gray-700 text-sm font-bold my-2">Description: </label>
+                <textarea name="description" rows="2" onChange={handleChange} className="shadow border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline w-full" value={product.description}></textarea>
 
-                <button className="bg-purple-500 hover:bg-purple-700 py-2 px-4 rounded focus:outline-none focus:shadow-outline font-bold text-white">
+                <button className="bg-purple-500 hover:bg-purple-700 mt-4 py-2 px-4 rounded focus:outline-none focus:shadow-outline font-bold text-white">
                     {router.query.id ? "Update product" : "Create product"}
                 </button>
             </form>
