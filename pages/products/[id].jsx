@@ -2,6 +2,7 @@ import { Layout } from "../../components/Layout";
 import React from 'react'
 import axios from "axios";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 
 function Product({ product }) {
@@ -9,10 +10,13 @@ function Product({ product }) {
     const router = useRouter();
 
     const handleDelete = async (id) => {
-
-        const res = await axios.delete(`/api/products/${id}`);
-        console.log(res);
-        router.push("/");
+        try {
+            const res = await axios.delete(`/api/products/${id}`);
+            console.log(res);
+            router.push("/");
+        } catch (error) {
+            toast.error(error.message, { position: "bottom-center" });
+        }
     }
 
     return (

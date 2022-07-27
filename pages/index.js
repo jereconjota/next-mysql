@@ -26,7 +26,7 @@ function index({ products }) {
 
 export const getServerSideProps = async (contex) => {
     const { data: products } = await axios.get('http://localhost:3000/api/products')
-
+    
     return {
         props: {
             products,

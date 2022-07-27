@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
 export function ProductForm() {
 
@@ -9,20 +10,31 @@ export function ProductForm() {
         price: 0,
         description: ""
     });
+
     const router = useRouter();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (router.query.id) {
-            await axios.put(`/api/products/${router.query.id}`, product);
-        }else{
-            const res = await axios.post("/api/products", product);
-            console.log(res);
+        try {
+            if (router.query.id) {
+                await axios.put(`/api/products/${router.query.id}`, product);
+                toast.success("Task Updated", {
+                    position: "bottom-center",
+                });
+            } else {
+                const res = await axios.post("/api/products", product);
+                toast.success("Task Saved", {
+                    position: "bottom-center",
+                });
+            }
+            router.push("/");
+        } catch (error) {
+            toast.error( error.message, { position: "bottom-center" } );
         }
-        router.push("/");
     }
 
-    const handleChange = ({target: {name, value}}) => {
+    const handleChange = ({ target: { name, value } }) => {
         setProduct({
             ...product,
             [name]: value
@@ -39,7 +51,7 @@ export function ProductForm() {
             getProduct();
         }
     }
-    , [router.query.id]);
+        , [router.query.id]);
 
 
     return (
@@ -56,7 +68,7 @@ export function ProductForm() {
 
                 <button className="bg-purple-500 hover:bg-purple-700 py-2 px-4 rounded focus:outline-none focus:shadow-outline font-bold text-white">
                     {router.query.id ? "Update product" : "Create product"}
-                    </button>
+                </button>
             </form>
         </div>
     )
