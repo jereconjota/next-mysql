@@ -1,11 +1,11 @@
-import { pool } from '../../../config/db';
+import { getLocalProducts, createLocalProduct  } from '../../../utils/products';
 
 export default function handler(req, res) {
 
     const METHOD = {
         GET: async () => {
             try {
-                const [products] = await pool.query('SELECT * FROM products');
+                const [products] = await getLocalProducts();
                 console.log(products);
                 res.status(200).json(products);
             } catch (error) {
@@ -17,7 +17,7 @@ export default function handler(req, res) {
             try {
                 console.log(req.body)
                 const { name, price, description } = req.body;
-                const [result] = await pool.query(`INSERT INTO products SET ?`, { name, price, description });
+                const [result] = await createLocalProduct( name, price, description );
                 console.log(result);
                 res.status(200).json({ name, price, description, id: result.insertId });
             } catch (error) {

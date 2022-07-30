@@ -3,6 +3,7 @@ import React from 'react'
 import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
+import { getLocalProduct } from '../../utils/products';
 
 
 function Product({ product }) {
@@ -12,7 +13,6 @@ function Product({ product }) {
     const handleDelete = async (id) => {
         try {
             const res = await axios.delete(`/api/products/${id}`);
-            console.log(res);
             router.push("/");
         } catch (error) {
             toast.error(error.message, { position: "bottom-center" });
@@ -40,10 +40,12 @@ function Product({ product }) {
 }
 
 export const getServerSideProps = async (contex) => {
-    const { data: product } = await axios.get('http://localhost:3000/api/products/' + contex.query.id);
+    // const { data: product } = await axios.get('http://localhost:3000/api/products/' + contex.query.id);
+    const [product] = await getLocalProduct(contex.query.id);
+
     return {
         props: {
-            product,
+            product: JSON.parse(JSON.stringify(product[0]))
         },
     }
 }

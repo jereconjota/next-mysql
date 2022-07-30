@@ -1,5 +1,5 @@
 import { pool } from '../../../config/db';
-
+import { getLocalProduct, updateLocalProduct, deleteLocalProduct } from '../../../utils/products';
 
 export default async function handler(req, res) {
     // console.log(req.method);
@@ -9,7 +9,8 @@ export default async function handler(req, res) {
         GET: async () => {
             try {
                 const { id } = req.query;
-                const [result] = await pool.query('SELECT * FROM products WHERE id = ?', [id]);
+                const [result] = await getLocalProduct( id );
+                console.log(result);
                 res.status(200).json(result[0]);
             } catch (error) {
                 console.log(error);
@@ -19,7 +20,7 @@ export default async function handler(req, res) {
         DELETE: async () => {
             try {
                 const { id } = req.query;
-                const [result] = await pool.query('DELETE FROM products WHERE id = ?', [id]);
+                const [result] = await deleteLocalProduct( id );
                 res.status(204).json();
             } catch (error) {
                 console.log(error);
@@ -30,7 +31,7 @@ export default async function handler(req, res) {
             try {
                 const { id } = req.query;
                 const { name, price, description } = req.body;
-                const [result] = await pool.query('UPDATE products SET name = ?, price = ?, description = ? WHERE id = ?', [name, price, description, id]);
+                const [result] = await updateLocalProduct(name, price, description, id);
                 res.status(204).json();
             } catch (error) {
                 console.log(error);

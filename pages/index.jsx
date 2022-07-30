@@ -1,6 +1,10 @@
-import axios from 'axios'
-import { Layout } from '../components/Layout'
-import { ProductCard } from '../components/ProductCard'
+import axios from 'axios';
+import { Layout } from '../components/Layout';
+import { ProductCard } from '../components/ProductCard';
+import { supabase } from '../utils/supabaseClient';
+import { getLocalProducts } from '../utils/products';
+
+
 
 function index({ products }) {
     return (
@@ -16,12 +20,37 @@ function index({ products }) {
     )
 }
 
+
+async function getProducts() {
+    try {
+
+        let { data, error, status } = await supabase
+            .from('products')
+            .select('*')
+
+        if (error && status !== 406) {
+            throw error
+        }
+
+        if (data) {
+            console.log(data)
+            return data;
+        }
+    } catch (error) {
+        console.log(error.message)
+    } 
+}
+
 export const getServerSideProps = async (contex) => {
-    const { data: products } = await axios.get('http://localhost:3000/api/products')
+    // const { data: products } = await axios.get('http://localhost:3000/api/products') 
+    //no debe hacerse el llamado a la api, podemos llamar directamente a la funcion que busca a la bd
+    const [products] = await getLocalProducts();
+
+    // const products = await getProducts();
 
     return {
         props: {
-            products,
+            products: JSON.parse(JSON.stringify(products))
         },
     }
 }

@@ -39,7 +39,6 @@ export function ProductForm() {
             ...product,
             [name]: value
         });
-        console.log(name, value);
     }
 
     useEffect(() => {
