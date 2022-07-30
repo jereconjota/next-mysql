@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Layout } from '../components/Layout';
 import { ProductCard } from '../components/ProductCard';
 import { supabase } from '../utils/supabaseClient';
-import { getLocalProducts } from '../utils/products';
+// import { getLocalProducts } from '../utils/products';
 
 
 
@@ -23,7 +23,6 @@ function index({ products }) {
 
 async function getProducts() {
     try {
-
         let { data, error, status } = await supabase
             .from('products')
             .select('*')
@@ -42,17 +41,27 @@ async function getProducts() {
 }
 
 export const getServerSideProps = async (contex) => {
-    // const { data: products } = await axios.get('http://localhost:3000/api/products') 
-    //no debe hacerse el llamado a la api, podemos llamar directamente a la funcion que busca a la bd
-    const [products] = await getLocalProducts();
 
-    // const products = await getProducts();
-
+    //trayendo datos de supabase
+    const products = await getProducts();
     return {
         props: {
-            products: JSON.parse(JSON.stringify(products))
+            products
         },
     }
+    
+    
+    //trayendo datos de una bd local:
+    // const { data: products } = await axios.get('http://localhost:3000/api/products') 
+    //no debe hacerse el llamado a la api asi 👆, podemos llamar directamente a la funcion que busca a la bd 👇
+    // const [products] = await getLocalProducts();
+    // return {
+    //     props: {
+    //         // products: JSON.parse(JSON.stringify(products))
+    //         products
+    //     },
+    // }
+
 }
 
 
